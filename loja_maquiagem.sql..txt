@@ -1,0 +1,70 @@
+CREATE TABLE makeup (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  category TEXT NOT NULL,
+  brand TEXT,
+  price DECIMAL(10,2) NOT NULL,
+  stock INTEGER NOT NULL,
+  release_year INTEGER,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Inserção de 15 itens
+INSERT INTO makeup (name, category, brand, price, stock, release_year) VALUES
+('Batom Matte Vermelho', 'Batom', 'VivaCor', 29.90, 25, 2021),
+('Batom Nude Cremoso', 'Batom', 'BellaLips', 34.50, 30, 2022),
+('Base Líquida FPS 30', 'Base', 'PelePerfeita', 79.90, 18, 2020),
+('Corretivo Líquido', 'Corretivo', 'Ilumina', 45.00, 22, 2019),
+('Máscara para Cílios Volume', 'Máscara', 'OlharMax', 39.90, 40, 2023),
+('Delineador Líquido', 'Delineador', 'Precisão', 24.90, 35, 2021),
+('Blush Compacto', 'Blush', 'Rosado', 27.50, 20, 2018),
+('Pó Translúcido', 'Pó', 'Acabamento', 49.90, 15, 2022),
+('Primer Facial', 'Primer', 'BaseFixa', 59.90, 12, 2020),
+('Paleta de Sombras 12 Cores', 'Paleta', 'ColorArt', 99.90, 10, 2021),
+('Iluminador Stick', 'Iluminador', 'GlowUp', 39.50, 14, 2023),
+('Bronzer Compacto', 'Bronzer', 'SunKiss', 33.00, 17, 2019),
+('Lenços Demaquilantes', 'Removedor', 'CleanFace', 15.90, 50, 2022),
+('Spray Fixador', 'Fixador', 'FixaTudo', 42.00, 16, 2020),
+('Esponja de Maquiagem', 'Acessório', 'BlendPro', 19.90, 60, 2017);
+
+-- 1) Itens ordenados por preço (mais barato -> mais caro)
+SELECT id, name, brand, category, price, stock
+FROM makeup
+ORDER BY price ASC;
+
+-- 2) Itens ordenados por preço (mais caro -> mais barato)
+SELECT id, name, brand, category, price, stock
+FROM makeup
+ORDER BY price DESC;
+
+-- 3) Estatísticas gerais sobre os itens
+SELECT
+  COUNT(*) AS total_itens,
+  ROUND(AVG(price), 2) AS preco_medio,
+  MIN(price) AS preco_minimo,
+  MAX(price) AS preco_maximo,
+  SUM(stock) AS estoque_total,
+  ROUND(AVG(stock), 2) AS estoque_medio
+FROM makeup;
+
+-- 4) Estatísticas por categoria (quantidade, preço médio, estoque total)
+SELECT
+  category,
+  COUNT(*) AS quantidade,
+  ROUND(AVG(price), 2) AS preco_medio,
+  SUM(stock) AS estoque_total
+FROM makeup
+GROUP BY category
+ORDER BY quantidade DESC;
+
+-- 5) Top 5 mais caros
+SELECT id, name, brand, price
+FROM makeup
+ORDER BY price DESC
+LIMIT 5;
+
+-- 6) Top 5 mais baratos
+SELECT id, name, brand, price
+FROM makeup
+ORDER BY price ASC
+LIMIT 5;
